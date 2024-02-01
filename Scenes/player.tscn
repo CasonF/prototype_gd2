@@ -1,0 +1,33 @@
+[gd_scene load_steps=8 format=3 uid="uid://c8cdnjbo4p7qf"]
+
+[ext_resource type="Texture2D" uid="uid://oriyki8cnns3" path="res://Assets/bullet_round.png" id="1_gt8ji"]
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_w1gm5"]
+[ext_resource type="PackedScene" uid="uid://blf73413cfe86" path="res://Scenes/Components/hitbox_component.tscn" id="2_pti6d"]
+[ext_resource type="PackedScene" uid="uid://dvnu2cmyenfy5" path="res://Scenes/gun.tscn" id="2_s4e5l"]
+[ext_resource type="Script" path="res://Scripts/TweenCamera.gd" id="3_5rrvg"]
+[ext_resource type="PackedScene" uid="uid://f2c35is3rw78" path="res://Scenes/Components/health_component.tscn" id="3_euau8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1f80i"]
+radius = 24.0
+
+[node name="Player" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_w1gm5")
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("2_pti6d")]
+shape = SubResource("CircleShape2D_1f80i")
+health_component = NodePath("../HealthComponent")
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_euau8")]
+max_hp = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("1_gt8ji")
+
+[node name="Gun" parent="." instance=ExtResource("2_s4e5l")]
+
+[node name="TweenCamera" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
+position_smoothing_enabled = true
+script = ExtResource("3_5rrvg")
+target = NodePath("..")

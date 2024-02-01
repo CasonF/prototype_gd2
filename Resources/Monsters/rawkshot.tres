@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="Monster" load_steps=2 format=3 uid="uid://dioc5fx6tmeed"]
+
+[ext_resource type="Script" path="res://Scripts/Resources/monster.gd" id="1_6bfgf"]
+
+[resource]
+script = ExtResource("1_6bfgf")
+name = "Rawkshot"
+element = "Basic"
+walk_speed = 50.0
+run_speed = 85.0
+base_hp = 10
+belly_size = 100.0
+is_melee = false
+base_damage = 1
+projectile_number = 1
+projectile_speed = 70.0
+projectile_speed_gain = 0.0
+projectile_range = 300.0
+projectile_size = 1.0
+shot_cooldown = 0.6
+following_projectiles = false
+follow_strength = 0.0
+can_crit = true
+crit_chance = 5.0
+crit_multipler = 2.0
+ignore_resistances = false
+always_supereffective = false
+has_end_of_move_effect = false
+end_of_move_effect = ""
+has_unique_trait = false
+unique_trait = ""

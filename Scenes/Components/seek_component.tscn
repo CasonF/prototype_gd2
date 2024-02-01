@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dapa43jyw07c4"]
+
+[ext_resource type="Script" path="res://Scripts/Components/SeekComponent.gd" id="1_78shj"]
+
+[node name="SeekComponent" type="Node"]
+script = ExtResource("1_78shj")
+
+[node name="SeekTimer" type="Timer" parent="."]
+one_shot = true

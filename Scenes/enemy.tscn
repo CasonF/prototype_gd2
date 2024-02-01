@@ -1,0 +1,121 @@
+[gd_scene load_steps=17 format=3 uid="uid://e583wvcjhios"]
+
+[ext_resource type="PackedScene" uid="uid://blf73413cfe86" path="res://Scenes/Components/hitbox_component.tscn" id="1_00a5v"]
+[ext_resource type="Script" path="res://Scripts/Enemy.gd" id="1_eqqo7"]
+[ext_resource type="Texture2D" uid="uid://oriyki8cnns3" path="res://Assets/bullet_round.png" id="1_uaxia"]
+[ext_resource type="Texture2D" uid="uid://cthfhhi4m4er5" path="res://Assets/bullet_tiny.png" id="2_4ccf7"]
+[ext_resource type="PackedScene" uid="uid://daiitkioy76hq" path="res://Scenes/Bullets/bullet_grubby.tscn" id="2_fb7yy"]
+[ext_resource type="PackedScene" uid="uid://f2c35is3rw78" path="res://Scenes/Components/health_component.tscn" id="3_7ywui"]
+[ext_resource type="PackedScene" uid="uid://d2o1rjchhc2tt" path="res://Scenes/Components/fov_component.tscn" id="3_ti7cv"]
+[ext_resource type="Shader" uid="uid://im1xgom45iy3" path="res://Assets/Materials/hit_flash.tres" id="4_cmt4v"]
+[ext_resource type="PackedScene" uid="uid://ba8xxgmebbgf6" path="res://Scenes/state_machine.tscn" id="5_3tku0"]
+[ext_resource type="Script" path="res://Scripts/States/WanderState.gd" id="6_2we7g"]
+[ext_resource type="Script" path="res://Scripts/States/FollowState.gd" id="8_ibh3p"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2hhmx"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0jumu"]
+radius = 150.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pmllx"]
+resource_local_to_scene = true
+shader = ExtResource("4_cmt4v")
+shader_parameter/enabled = false
+shader_parameter/tint = Color(1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_3uae1"]
+resource_name = "damaged"
+length = 0.1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.8, 1.2), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ko1ur"]
+_data = {
+"damaged": SubResource("Animation_3uae1")
+}
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 2
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_eqqo7")
+bullet = ExtResource("2_fb7yy")
+force = 400.0
+projectile_spread = 0.2
+use_inverse_color = false
+
+[node name="MuzzleComponent" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_4ccf7")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 15.0
+target_desired_distance = 25.0
+path_max_distance = 200.0
+avoidance_enabled = true
+radius = 16.0
+avoidance_layers = 3
+avoidance_mask = 3
+debug_enabled = true
+debug_path_custom_color = Color(1, 0, 0, 1)
+debug_path_custom_line_width = 1.0
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("1_00a5v")]
+light_mask = 2
+visibility_layer = 2
+shape = SubResource("CircleShape2D_2hhmx")
+health_component = NodePath("../HealthComponent")
+
+[node name="FOVComponent" parent="." instance=ExtResource("3_ti7cv")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FOVComponent"]
+shape = SubResource("CircleShape2D_0jumu")
+debug_color = Color(1, 1, 1, 0.101961)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.713726, 0, 0.0313726, 1)
+material = SubResource("ShaderMaterial_pmllx")
+texture = ExtResource("1_uaxia")
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_7ywui")]
+
+[node name="StateMachine" parent="." node_paths=PackedStringArray("initial_state") instance=ExtResource("5_3tku0")]
+initial_state = NodePath("WanderState")
+
+[node name="WanderState" type="Node" parent="StateMachine"]
+script = ExtResource("6_2we7g")
+
+[node name="FollowState" type="Node" parent="StateMachine"]
+script = ExtResource("8_ibh3p")
+lead_shot = true
+state_can_shoot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ko1ur")
+}

@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://dvnu2cmyenfy5"]
+
+[ext_resource type="Texture2D" uid="uid://ok0wd57jhvpp" path="res://Assets/gun_test_1.png" id="1_0m6so"]
+[ext_resource type="Script" path="res://Scripts/Gun.gd" id="2_yeuy6"]
+[ext_resource type="PackedScene" uid="uid://daiitkioy76hq" path="res://Scenes/Bullets/bullet_grubby.tscn" id="3_nocin"]
+[ext_resource type="Texture2D" uid="uid://cthfhhi4m4er5" path="res://Assets/bullet_tiny.png" id="4_s4n4a"]
+[ext_resource type="PackedScene" uid="uid://2a3ss633tiw6" path="res://Scenes/Components/perimeter_node.tscn" id="5_3qli7"]
+
+[node name="Gun" type="Sprite2D"]
+scale = Vector2(3, 3)
+texture = ExtResource("1_0m6so")
+script = ExtResource("2_yeuy6")
+bullet = ExtResource("3_nocin")
+force = 600.0
+projectile_spread = 0.3
+use_inverse_color = false
+
+[node name="CooldownTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+autostart = true
+
+[node name="MuzzleComponent" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(8, -2.5)
+texture = ExtResource("4_s4n4a")
+
+[node name="PerimeterNode" parent="." instance=ExtResource("5_3qli7")]
+max_distance_from_parent = 30.0

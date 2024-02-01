@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2o1rjchhc2tt"]
+
+[ext_resource type="Script" path="res://Scripts/Components/FOVComponent.gd" id="1_xbt8o"]
+
+[node name="FOVComponent" type="Area2D"]
+script = ExtResource("1_xbt8o")
+
+[node name="LOSTimer" type="Timer" parent="."]
+wait_time = 0.01
+one_shot = true
+autostart = true
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(250, 0)

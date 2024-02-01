@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://bd05ml0u4wi4l"]
+
+[ext_resource type="Script" path="res://Scripts/Bullet.gd" id="1_kxvk1"]
+[ext_resource type="PackedScene" uid="uid://blf73413cfe86" path="res://Scenes/Components/hitbox_component.tscn" id="2_leg3l"]
+[ext_resource type="Texture2D" uid="uid://6umqpdvadc0j" path="res://Assets/bullet_rect.png" id="3_jld61"]
+[ext_resource type="PackedScene" uid="uid://dapa43jyw07c4" path="res://Scenes/Components/seek_component.tscn" id="4_vruy7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qtxtp"]
+size = Vector2(16, 8)
+
+[node name="Bullet" type="Area2D"]
+top_level = true
+light_mask = 3
+visibility_layer = 3
+collision_layer = 0
+collision_mask = 0
+collision_priority = 5.0
+script = ExtResource("1_kxvk1")
+bullet_size = 2.0
+color = Color(0.854902, 0.72549, 0.305882, 1)
+inverse_color = Color(0, 0.505882, 0.384314, 1)
+
+[node name="HitboxComponent" parent="." instance=ExtResource("2_leg3l")]
+shape = SubResource("RectangleShape2D_qtxtp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_jld61")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+texture = ExtResource("3_jld61")
+
+[node name="LifespanComponent" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[node name="SeekComponent" parent="." instance=ExtResource("4_vruy7")]
+seek_strength = 0.3
+max_seek_distance = 500.0
+min_seek_weight = 0.4
+max_seek_weight = 0.5

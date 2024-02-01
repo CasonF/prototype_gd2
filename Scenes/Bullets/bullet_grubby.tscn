@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://daiitkioy76hq"]
+
+[ext_resource type="Script" path="res://Scripts/Bullet.gd" id="1_fdtbc"]
+[ext_resource type="PackedScene" uid="uid://blf73413cfe86" path="res://Scenes/Components/hitbox_component.tscn" id="2_lx2c3"]
+[ext_resource type="Texture2D" uid="uid://cthfhhi4m4er5" path="res://Assets/bullet_tiny.png" id="3_qacnx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_076wa"]
+radius = 2.0
+
+[node name="Bullet" type="Area2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_fdtbc")
+bullet_size = 3.0
+damage = 1
+color = Color(0.537255, 0.65098, 0.345098, 1)
+inverse_color = Color(0.360784, 0.368627, 0.027451, 1)
+
+[node name="HitboxComponent" parent="." instance=ExtResource("2_lx2c3")]
+shape = SubResource("CircleShape2D_076wa")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_qacnx")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+texture = ExtResource("3_qacnx")
+
+[node name="LifespanComponent" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://doi321e6mmsme"]
+
+[ext_resource type="Script" path="res://Scripts/Components/WaveComponent.gd" id="1_rfjxb"]
+
+[node name="WaveComponent" type="Node"]
+script = ExtResource("1_rfjxb")
